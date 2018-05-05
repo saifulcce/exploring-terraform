@@ -2,7 +2,7 @@ provider "aws" {
     region = "us-west-2"
 }
 
-resource "aws_s3_bucket" "terraform-state" {
+resource "aws_s3_bucket" "terraform_state" {
     bucket = "saif-timam-terraform"
 
     versioning {
@@ -12,4 +12,8 @@ resource "aws_s3_bucket" "terraform-state" {
     lifecycle {
         prevent_destroy = true
     }
+}
+
+output "s3_bucket_arn" {
+    value = "${aws_s3_bucket.terraform_state.arn}"
 }
