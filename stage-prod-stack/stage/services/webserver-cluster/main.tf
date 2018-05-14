@@ -12,6 +12,10 @@ provider "aws" {
     region = "us-west-2"
 }
 
+module "webserver_cluster" {
+    source = "../../../modules/services/webserver-cluster"
+}
+
 data "aws_availability_zones" "all" {}
 
 resource "aws_security_group" "servers" {
@@ -39,7 +43,7 @@ data "terraform_remote_state" "db" {
 }
 
 
-### 
+###
 data "template_file" "user_data" {
 	template = "${file("user-data.sh")}"
 	vars {
@@ -70,7 +74,7 @@ resource "aws_elb" "firstelb" {
     name               = "terraform-asg-test"
     availability_zones = ["${data.aws_availability_zones.all.names}"]
     security_groups     = ["${aws_security_group.firstelb.id}"]
-    
+
     listener {
         lb_port           = 80
         lb_protocol       = "http"
@@ -94,7 +98,7 @@ resource "aws_launch_configuration" "alcf" {
     security_groups = ["${aws_security_group.servers.id}"]
     user_data = "${data.template_file.user_data.rendered}"
     lifecycle{
-        create_before_destroy = true 
+        create_before_destroy = true
     }
 }
 
