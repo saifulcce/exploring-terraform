@@ -3,3 +3,4 @@
 *.tfstate.backup
 
 *.access
+.idea
