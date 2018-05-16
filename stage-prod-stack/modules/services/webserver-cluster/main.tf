@@ -7,11 +7,6 @@ terraform {
     }
 }
 
-
-provider "aws" {
-    region = "us-west-2"
-}
-
 data "aws_availability_zones" "all" {}
 
 resource "aws_security_group" "servers" {
